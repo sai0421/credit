@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airp Form</title>
+</head>
+<body>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      // Automatically start the process when the page loads without any spinner
+      fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+          const userIP = data.ip;
+
+          fetch(`https://script.google.com/macros/s/AKfycbzH2Wz54zjaOf9iSflvdGWvS_x4xbtmu36lCMRKSGpWL_TlCD_ZCwtCBn_Wbmu-ejsRbQ/exec?ip=${encodeURIComponent(userIP)}`)
+            .then(response => response.json())
+            .then(data => {
+              if (data.referralLink) {
+                window.location.href = data.referralLink;
+              } else {
+                console.error(data.error || "An error occurred.");
+              }
+            })
+            .catch(error => {
+              console.error("Error submitting data:", error);
+            });
+        })
+        .catch(error => {
+          console.error("Error fetching IP address:", error);
+        });
+    });
+  </script>
+
+</body>
+</html>
